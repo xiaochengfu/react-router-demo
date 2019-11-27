@@ -82,8 +82,6 @@ class TabMenu extends React.Component {
             }
         }
         this.setState({ panes, activeKey });
-        debugger
-        console.log(this.props)
         this.props.history.goBack()
     };
 
@@ -99,8 +97,7 @@ class TabMenu extends React.Component {
             List.push(<TabPane tab={pane.title} key={pane.key}>
                     <Content />
             </TabPane>)
-            
-    })
+         })
         return List
     }
     render(){
@@ -120,11 +117,11 @@ class TabMenu extends React.Component {
                     >
                         {this.renderList()}
                     </Tabs>
-                    <div>
+                    {/* <div>
                         {this.state.panes.map(item => {
                             return <span key={item.key}>{item.title}</span>
                         })}
-                    </div>
+                    </div> */}
                 </div>
 </RemoveContext.Provider>
             

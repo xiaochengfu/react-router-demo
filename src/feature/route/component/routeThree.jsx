@@ -14,37 +14,45 @@ class RouteThree extends React.Component {
         this.props.history.push('route_test_1')
     }
     close = ()=>{
-        this.state.remove('route_test_3')
+        const currentRoute = this.props.history.location.pathname.substr(1);
+        this.props.remove(currentRoute)
     }
-    componentDidUpdate(){
-        // console.log(tabMenu,CloseRouteContext);
-        console.log(this.props);
-    }
+
     render(){
         return (
-            <RemoveContext.Consumer>
-                {remove=>{
-                    // this.setState({ remove: remove})
-                      return <div >
-                        123
-                        <Button onClick={this.goto}>跳转</Button>
-                        <Button onClick={()=>{
-                              remove('route_test_3')
-                        }}>关闭当前</Button>
-                        </div>
-                }}
-            </RemoveContext.Consumer>
+            <div >
+            <div>测试3</div>
+            <Button onClick={this.goto}>跳转到测试1</Button>
+            <Button onClick={this.close}>关闭当前</Button>
+            </div>
             
-
         )
     }
 }
 // let RouteThree1 = ()=>{
 //     return <RemoveContext.Consumer>
 //         {remove=>{
-//             console.log(remove);
-//             return <RouteThree {...remove} />
+//             return <RouteThree remove={remove} />
 //         }}
 //     </RemoveContext.Consumer>
 // }
-export default withRouter(RouteThree)
+// export default withRouter(RouteThree1)
+
+// export default props => (
+//     <RemoveContext.Consumer>
+//         {remove => withRouter(<RouteThree {...props} remove={remove} />)}
+//     </RemoveContext.Consumer>
+// );
+
+const highRouteContent = (Component)=> {
+    //返回另一个组件
+    return function RouterComponent(props) {
+        // 最后使用context 渲染这个被封装组件
+        return (
+            <RemoveContext.Consumer>
+                {remove => <Component {...props} remove={remove} />}
+            </RemoveContext.Consumer>
+        );
+    };
+}
+export default withRouter(highRouteContent(RouteThree))

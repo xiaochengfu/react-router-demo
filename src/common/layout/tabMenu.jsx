@@ -2,9 +2,8 @@ import React from 'react'
 import { Tabs } from 'antd';
 import { RouteMap } from '../logic/routeLogic';
 import {withRouter} from 'react-router-dom';
-
+import RemoveContext from "./removeContext";
 const { TabPane } = Tabs;
-
 class TabMenu extends React.Component {
     constructor(props) {
         super(props);
@@ -15,10 +14,24 @@ class TabMenu extends React.Component {
             // { title: '测试2', content: 'route_test_2', key: 'route_test_2' },
             // { title: '测试3', content: 'route_test_3', key: 'route_test_3' },
         ];
+        const currentRoute = this.props.history.location.pathname.substr(1);
+
         this.state = {
-            activeKey: panes[0].key,
+            activeKey: currentRoute,
             panes,
+            contentList:[]
         };
+ 
+    }
+
+    refreshRoute = (currentRoute)=>{
+        if(currentRoute !== 'index'){
+            this.add(currentRoute);
+        }
+    }
+    componentDidMount(){
+        const currentRoute = this.props.history.location.pathname.substr(1);
+        this.refreshRoute(currentRoute);
     }
 
     componentWillReceiveProps(){
@@ -40,6 +53,7 @@ class TabMenu extends React.Component {
     };
 
     onEdit = (targetKey, action) => {
+        
         this[action](targetKey);
     };
 
@@ -47,10 +61,11 @@ class TabMenu extends React.Component {
         const { panes } = this.state;
         const title = RouteMap[currentRoute].name;
         panes.push({ title: title, content: currentRoute, key: currentRoute });
-        this.setState({ panes });
+        this.setState({ })
     };
 
     remove = targetKey => {
+        console.log(targetKey);
         let { activeKey } = this.state;
         let lastIndex;
         this.state.panes.forEach((pane, i) => {
@@ -67,6 +82,9 @@ class TabMenu extends React.Component {
             }
         }
         this.setState({ panes, activeKey });
+        debugger
+        console.log(this.props)
+        this.props.history.goBack()
     };
 
     onTabClick = (evt)=>{
@@ -74,27 +92,44 @@ class TabMenu extends React.Component {
             this.props.history.push(`/${evt}`)
         }
     }
+    renderList = ()=>{
+        let List= []
+        this.state.panes.map(pane => {
+            const Content = RouteMap[pane.content].component
+            List.push(<TabPane tab={pane.title} key={pane.key}>
+                    <Content />
+            </TabPane>)
+            
+    })
+        return List
+    }
     render(){
         return (
-            <div>
-                <Tabs
-                    hideAdd
-                    onChange={this.onChange}
-                    activeKey={this.state.activeKey}
-                    type="editable-card"
-                    onEdit={this.onEdit}
-                    onTabClick={this.onTabClick}
-                >
-                    {this.state.panes.map(pane => (
-                        <TabPane tab={pane.title} key={pane.key}>
-                        {(new RouteMap[pane.content].component) }
-                        </TabPane>
-                    ))}
-                </Tabs>
-            </div>
+            <RemoveContext.Provider 
+             value={(currentRoute) => { this.onEdit(currentRoute, 'remove') }}
+            >
+                <div>
+                    
+                    <Tabs
+                        hideAdd
+                        onChange={this.onChange}
+                        activeKey={this.state.activeKey}
+                        type="editable-card"
+                        onEdit={this.onEdit}
+                        onTabClick={this.onTabClick}
+                    >
+                        {this.renderList()}
+                    </Tabs>
+                    <div>
+                        {this.state.panes.map(item => {
+                            return <span key={item.key}>{item.title}</span>
+                        })}
+                    </div>
+                </div>
+</RemoveContext.Provider>
+            
 
         )
     }
 }
-
-export default  withRouter(TabMenu);
+export default withRouter(TabMenu)

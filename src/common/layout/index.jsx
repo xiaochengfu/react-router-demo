@@ -8,7 +8,6 @@ import {
 } from 'antd';
 import { withRouter } from "react-router-dom";
 import TabMenu from './tabMenu';
-
 const {
     SubMenu
 } = Menu;
@@ -23,9 +22,11 @@ class LayoutMenu extends React.Component {
         super(props)
     }
 
-    componentWillMount(){
-    }
+    // componentWillMount(){
+    // }
+    UNSAFE_componentWillMount(){
 
+    }
     state = {
         leftMenuList:[
             {

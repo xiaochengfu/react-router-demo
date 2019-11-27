@@ -106,7 +106,6 @@ class TabMenu extends React.Component {
              value={(currentRoute) => { this.onEdit(currentRoute, 'remove') }}
             >
                 <div>
-                    
                     <Tabs
                         hideAdd
                         onChange={this.onChange}
@@ -117,15 +116,8 @@ class TabMenu extends React.Component {
                     >
                         {this.renderList()}
                     </Tabs>
-                    {/* <div>
-                        {this.state.panes.map(item => {
-                            return <span key={item.key}>{item.title}</span>
-                        })}
-                    </div> */}
                 </div>
-</RemoveContext.Provider>
-            
-
+            </RemoveContext.Provider>
         )
     }
 }

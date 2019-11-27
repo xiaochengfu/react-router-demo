@@ -21,11 +21,10 @@ class RouteThree extends React.Component {
     render(){
         return (
             <div >
-            <div>测试3</div>
-            <Button onClick={this.goto}>跳转到测试1</Button>
-            <Button onClick={this.close}>关闭当前</Button>
+                <div>测试3</div>
+                <Button onClick={this.goto}>跳转到测试1</Button>
+                <Button onClick={this.close}>关闭当前</Button>
             </div>
-            
         )
     }
 }

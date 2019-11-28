@@ -1,4 +1,4 @@
-### 基于creat-react-app脚手架的一个react路由demo
+### 基于creat-react-app脚手架的一个伪浏览器路由demo
 
 ### 安装
 

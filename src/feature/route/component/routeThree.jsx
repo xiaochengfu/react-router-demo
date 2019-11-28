@@ -20,9 +20,9 @@ class RouteThree extends React.Component {
         const currentRoute = this.props.history.location.pathname.substr(1);
         this.props.remove(currentRoute)
     }
-    closeAndGoto = ()=>{
+    closeAndGoto = () => {
         const currentRoute = this.props.history.location.pathname.substr(1);
-        this.props.remove(currentRoute,'route_test_1')
+        this.props.remove(currentRoute, 'route_test_1')
         // this.props.history.push('route_test_1');
     }
 

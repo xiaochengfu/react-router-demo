@@ -64,7 +64,7 @@ class TabMenu extends React.Component {
         this.setState({ })
     };
 
-    remove = targetKey => {
+    remove = (targetKey,history) => {
         console.log(targetKey);
         let { activeKey } = this.state;
         let lastIndex;
@@ -81,9 +81,25 @@ class TabMenu extends React.Component {
                 activeKey = panes[0].key;
             }
         }
-        this.setState({ panes, activeKey });
-        this.props.history.goBack()
+        this.state.panes.forEach((pane, i) => {
+            if (pane.key === targetKey) {
+                if(i == this.state.panes.length -1 ){
+                    lastIndex = i - 1;
+                }else{
+                    lastIndex = i +1
+                }
+            }
+        });
+        const history_route = this.state.panes[lastIndex].key
+        this.setState({ panes, activeKey },()=>{
+            //活动最近的路由
+            console.log(this.state);
+            this.props.history.push(history || history_route);
+        });
+       
     };
+
+
 
     onTabClick = (evt)=>{
         if(evt != this.props.match.params.name){
@@ -103,9 +119,15 @@ class TabMenu extends React.Component {
     render(){
         return (
             <RemoveContext.Provider 
-             value={(currentRoute) => { this.onEdit(currentRoute, 'remove') }}
+             value={
+                 {
+                    remove: (currentRoute,history) => { this.remove(currentRoute,history) 
+                    },
+                    tabs:this.state.panes
+                 }}   
             >
                 <div>
+                    
                     <Tabs
                         hideAdd
                         onChange={this.onChange}

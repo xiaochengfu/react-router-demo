@@ -8,22 +8,32 @@ class RouteThree extends React.Component {
         super(props)
     }
     state = {
-        remove:()=>{}
+        remove: () => { }
     }
-    goto=()=>{
+    componentDidUpdate() {
+        console.log(this.props);
+    }
+    goto = () => {
         this.props.history.push('route_test_1')
     }
-    close = ()=>{
+    close = () => {
         const currentRoute = this.props.history.location.pathname.substr(1);
         this.props.remove(currentRoute)
     }
+    closeAndGoto = ()=>{
+        const currentRoute = this.props.history.location.pathname.substr(1);
+        this.props.remove(currentRoute,'route_test_1')
+        // this.props.history.push('route_test_1');
+    }
 
-    render(){
+    render() {
         return (
             <div >
                 <div>测试3</div>
                 <Button onClick={this.goto}>跳转到测试1</Button>
-                <Button onClick={this.close}>关闭当前</Button>
+                <Button
+                    onClick={this.close}>关闭当前</Button>
+                <Button onClick={this.closeAndGoto}>关闭当前并跳转到测试1</Button>
             </div>
         )
     }
@@ -43,13 +53,13 @@ class RouteThree extends React.Component {
 //     </RemoveContext.Consumer>
 // );
 
-const highRouteContent = (Component)=> {
+const highRouteContent = (Component) => {
     //返回另一个组件
-    return function RouterComponent(props) {
+    return (props) => {
         // 最后使用context 渲染这个被封装组件
         return (
             <RemoveContext.Consumer>
-                {remove => <Component {...props} remove={remove} />}
+                {context => <Component {...props} remove={context.remove} />}
             </RemoveContext.Consumer>
         );
     };

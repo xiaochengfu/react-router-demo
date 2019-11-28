@@ -1,18 +1,12 @@
 import React from 'react'
 import { Button } from "antd";
 import { withRouter } from "react-router-dom";
-import tabMenu from "./../../../common/layout/tabMenu";
-import RemoveContext from "./../../../common/layout/removeContext";
+import TabRouter from '../../../common/layout/tabRouter';
 class RouteThree extends React.Component {
-    constructor(props) {
-        super(props)
-    }
     state = {
         remove: () => { }
     }
-    componentDidUpdate() {
-        console.log(this.props);
-    }
+  
     goto = () => {
         this.props.history.push('route_test_1')
     }
@@ -38,30 +32,5 @@ class RouteThree extends React.Component {
         )
     }
 }
-// let RouteThree1 = ()=>{
-//     return <RemoveContext.Consumer>
-//         {remove=>{
-//             return <RouteThree remove={remove} />
-//         }}
-//     </RemoveContext.Consumer>
-// }
-// export default withRouter(RouteThree1)
 
-// export default props => (
-//     <RemoveContext.Consumer>
-//         {remove => withRouter(<RouteThree {...props} remove={remove} />)}
-//     </RemoveContext.Consumer>
-// );
-
-const highRouteContent = (Component) => {
-    //返回另一个组件
-    return (props) => {
-        // 最后使用context 渲染这个被封装组件
-        return (
-            <RemoveContext.Consumer>
-                {context => <Component {...props} remove={context.remove} />}
-            </RemoveContext.Consumer>
-        );
-    };
-}
-export default withRouter(highRouteContent(RouteThree))
+export default withRouter(TabRouter(RouteThree))

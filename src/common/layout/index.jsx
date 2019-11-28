@@ -18,15 +18,7 @@ const {
 } = Layout;
 
 class LayoutMenu extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-
-    // componentWillMount(){
-    // }
-    UNSAFE_componentWillMount(){
-
-    }
+    
     state = {
         leftMenuList:[
             {

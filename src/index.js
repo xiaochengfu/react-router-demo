@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {HashRouter,Switch,Redirect,Route,BrowserRouter} from 'react-router-dom'
+import {HashRouter,Switch,Redirect,Route} from 'react-router-dom'
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import LayoutMenu from './common/layout';
@@ -17,9 +17,9 @@ class Main extends React.Component{
 }
 
 ReactDOM.render( 
-        <BrowserRouter>
+        <HashRouter >
             < Main />
-        </BrowserRouter>, 
+        </HashRouter>, 
         document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

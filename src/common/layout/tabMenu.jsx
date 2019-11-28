@@ -1,46 +1,43 @@
 import React from 'react'
 import { Tabs } from 'antd';
 import { RouteMap } from '../logic/routeLogic';
-import {withRouter} from 'react-router-dom';
-import RemoveContext from "./removeContext";
+import { withRouter } from 'react-router-dom';
+import RouterContext from "../context/routerContext";
 const { TabPane } = Tabs;
 class TabMenu extends React.Component {
     constructor(props) {
         super(props);
         this.newTabIndex = 0;
         const panes = [
-            { title: '首页', content: 'index', key: 'index' },
-            // { title: '测试1', content: 'route_test_1', key: 'route_test_1' },
-            // { title: '测试2', content: 'route_test_2', key: 'route_test_2' },
-            // { title: '测试3', content: 'route_test_3', key: 'route_test_3' },
+            { title: '首页', content: 'index', key: 'index', closable: false }
         ];
         const currentRoute = this.props.history.location.pathname.substr(1);
 
         this.state = {
             activeKey: currentRoute,
             panes,
-            contentList:[]
+            contentList: []
         };
- 
+
     }
 
-    refreshRoute = (currentRoute)=>{
-        if(currentRoute !== 'index'){
+    refreshRoute = (currentRoute) => {
+        if (currentRoute !== 'index') {
             this.add(currentRoute);
         }
     }
-    componentDidMount(){
+    componentDidMount() {
         const currentRoute = this.props.history.location.pathname.substr(1);
         this.refreshRoute(currentRoute);
     }
 
-    componentWillReceiveProps(){
+    componentWillReceiveProps() {
         const currentRoute = this.props.history.location.pathname.substr(1);
         let route_path_array = [];
-        this.state.panes.map(item=>{
-            route_path_array = [...route_path_array,item.key]
+        this.state.panes.forEach(item => {
+            route_path_array = [...route_path_array, item.key]
         })
-        if (route_path_array.indexOf(currentRoute) === -1){
+        if (route_path_array.indexOf(currentRoute) === -1) {
             this.add(currentRoute);
         }
         this.setState({
@@ -53,7 +50,7 @@ class TabMenu extends React.Component {
     };
 
     onEdit = (targetKey, action) => {
-        
+
         this[action](targetKey);
     };
 
@@ -61,11 +58,10 @@ class TabMenu extends React.Component {
         const { panes } = this.state;
         const title = RouteMap[currentRoute].name;
         panes.push({ title: title, content: currentRoute, key: currentRoute });
-        this.setState({ })
+        this.setState({})
     };
 
-    remove = (targetKey,history) => {
-        console.log(targetKey);
+    remove = (targetKey, history) => {
         let { activeKey } = this.state;
         let lastIndex;
         this.state.panes.forEach((pane, i) => {
@@ -83,51 +79,50 @@ class TabMenu extends React.Component {
         }
         this.state.panes.forEach((pane, i) => {
             if (pane.key === targetKey) {
-                if(i == this.state.panes.length -1 ){
+                if (i === this.state.panes.length - 1) {
                     lastIndex = i - 1;
-                }else{
-                    lastIndex = i +1
+                } else {
+                    lastIndex = i + 1
                 }
             }
         });
-        const history_route = this.state.panes[lastIndex].key
-        this.setState({ panes, activeKey },()=>{
-            //活动最近的路由
-            console.log(this.state);
+        const history_route = this.state.panes[lastIndex].key;
+        //实现浏览器关闭标签时的跳转功能
+        this.setState({ panes, activeKey }, () => {
             this.props.history.push(history || history_route);
         });
-       
+
     };
 
 
 
-    onTabClick = (evt)=>{
-        if(evt != this.props.match.params.name){
+    onTabClick = (evt) => {
+        if (evt !== this.props.match.params.name) {
             this.props.history.push(`/${evt}`)
         }
     }
-    renderList = ()=>{
-        let List= []
-        this.state.panes.map(pane => {
+    renderList = () => {
+        let List = []
+
+        this.state.panes.forEach(pane => {
             const Content = RouteMap[pane.content].component
-            List.push(<TabPane tab={pane.title} key={pane.key}>
-                    <Content />
+            List.push(<TabPane tab={pane.title} key={pane.key} closable={pane.closable === false ? false : true}>
+                <Content />
             </TabPane>)
-         })
+        })
         return List
     }
-    render(){
+    render() {
         return (
-            <RemoveContext.Provider 
-             value={
-                 {
-                    remove: (currentRoute,history) => { this.remove(currentRoute,history) 
-                    },
-                    tabs:this.state.panes
-                 }}   
+            <RouterContext.Provider
+                value={{
+                    remove: (currentRoute, history) => {
+                        this.remove(currentRoute, history)
+                    }
+                }}
             >
                 <div>
-                    
+
                     <Tabs
                         hideAdd
                         onChange={this.onChange}
@@ -139,7 +134,7 @@ class TabMenu extends React.Component {
                         {this.renderList()}
                     </Tabs>
                 </div>
-            </RemoveContext.Provider>
+            </RouterContext.Provider>
         )
     }
 }

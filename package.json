@@ -46,6 +46,8 @@
     "react": "^16.12.0",
     "react-app-polyfill": "^1.0.4",
     "react-dev-utils": "^9.1.0",
+    "react-dnd": "^9.5.1",
+    "react-dnd-html5-backend": "^9.5.1",
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
     "resolve": "1.12.0",

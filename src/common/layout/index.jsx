@@ -18,36 +18,45 @@ const {
 } = Layout;
 
 class LayoutMenu extends React.Component {
-    
-    state = {
-        leftMenuList:[
-            {
-                name: '路由',
-                path:'route',
-                children: [
-                    {
-                        name: '测试1',
-                        path:'route_test_1'
-                    },
-                    {
-                        name: '测试2',
-                        path: 'route_test_2'
-                    },
-                    {
-                        name: '测试3',
-                        path: 'route_test_3'
-                    }
-                   
-                ]
-            }
-        ],
-        currentRoute:'index'
+    constructor(props) {
+        super(props)
+        this.state = {
+            leftMenuList: [
+                {
+                    name: '路由',
+                    path: 'route',
+                    children: [
+                        {
+                            name: '测试1',
+                            path: 'route_test_1'
+                        },
+                        {
+                            name: '测试2',
+                            path: 'route_test_2'
+                        },
+                        {
+                            name: '测试3',
+                            path: 'route_test_3'
+                        }
+
+                    ]
+                }
+            ],
+            currentRoute: 'index'
+        }
     }
-    clickMenu = (evt)=>{
+
+    // componentWillMount(){
+    // }
+    UNSAFE_componentWillMount() {
+
+    }
+
+    clickMenu = (evt) => {
         this.props.history.push(`/${evt.key}`)
     }
 
-    render(){
+    render() {
         let selectedKey = this.props.match.params.name;
         return (
             <div>
@@ -76,7 +85,7 @@ class LayoutMenu extends React.Component {
                                 selectedKeys={[selectedKey]}
                                 style={{ height: '100%', borderRight: 0 }}
                             >
-                            {this.state.leftMenuList.map(item=>{
+                                {this.state.leftMenuList.map(item => {
                                     return <SubMenu
                                         key={item.path}
                                         mode="inline"
@@ -85,17 +94,17 @@ class LayoutMenu extends React.Component {
                                             <span>
                                                 <Icon type="user" />
                                                 {item.name}
-                                        </span>
+                                            </span>
                                         }
                                     >
-                                        {item.children && item.children.map((item)=>{
-                                                return <Menu.Item 
-                                                            onClick={this.clickMenu} 
-                                                            key={item.path}
-                                                        >{item.name}</Menu.Item>
+                                        {item.children && item.children.map((item) => {
+                                            return <Menu.Item
+                                                onClick={this.clickMenu}
+                                                key={item.path}
+                                            >{item.name}</Menu.Item>
                                         })}
                                     </SubMenu>
-                            })}
+                                })}
                             </Menu>
                         </Sider>
                         <Layout style={{ padding: '0 24px 24px' }}>
@@ -112,8 +121,8 @@ class LayoutMenu extends React.Component {
                                     minHeight: 280,
                                 }}
                             >
-                                <TabMenu /> 
-                             </Content>
+                                <TabMenu />
+                            </Content>
                         </Layout>
                     </Layout>
                 </Layout>

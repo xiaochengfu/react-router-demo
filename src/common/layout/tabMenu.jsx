@@ -1,9 +1,10 @@
 import React from 'react'
-import { Tabs } from 'antd';
+import { Tabs, Button, Icon, Menu, Dropdown } from 'antd';
 import { RouteMap } from '../logic/routeLogic';
 import { withRouter } from 'react-router-dom';
 import RouterContext from "../context/routerContext";
 const { TabPane } = Tabs;
+
 class TabMenu extends React.Component {
 
     constructor(props) {
@@ -87,7 +88,33 @@ class TabMenu extends React.Component {
             </TabPane>
         })
     }
-    
+    operations = () => (<Dropdown overlay={this.menu()} trigger={['click']} placement="bottomLeft">
+        <Button><Icon type="align-right" /></Button>
+    </Dropdown>)
+
+    menu = () => (
+        <Menu>
+            <Menu.Item key="0" onClick={this.closeOther}>
+                关闭其他
+        </Menu.Item>
+            <Menu.Item key="1" onClick={this.closeAll}>
+                关闭全部
+        </Menu.Item>
+        </Menu>
+    );
+    closeAll = () => {
+        let panes = Array.from(this.state.panes)
+        panes = panes.filter(item => item.key === 'index')
+        this.setState({ panes },()=>{
+            this.props.history.push('index')
+        })
+    }
+    closeOther = () => {
+        const currentRoute = this.props.history.location.pathname.substr(1);
+        let panes = Array.from(this.state.panes)
+        panes = panes.filter(item => item.key === 'index' || item.key === currentRoute)
+        this.setState({ panes })
+    }
     render() {
         return (
             <RouterContext.Provider
@@ -102,6 +129,7 @@ class TabMenu extends React.Component {
                 <div>
 
                     <Tabs
+                        tabBarExtraContent={this.operations()}
                         hideAdd
                         onChange={this.onChange}
                         activeKey={this.state.activeKey}

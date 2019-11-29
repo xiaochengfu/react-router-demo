@@ -11,7 +11,7 @@ class TabMenu extends React.Component {
         this.state = {
             activeKey: this.props.history.location.pathname.substr(1),
             panes: [
-                { title: '首页', content: 'index', key: 'index' }
+                { title: '首页', content: 'index', key: 'index', closable: false }
             ],
             contentList: []
         };
@@ -82,7 +82,7 @@ class TabMenu extends React.Component {
         let panes = Array.from(this.state.panes)
         return panes.map(pane => {
             const Content = RouteMap[pane.content].component
-            return <TabPane tab={pane.title} key={pane.key}>
+            return <TabPane tab={pane.title} key={pane.key} closable={pane.closable === false ? false : true}>
                 <Content />
             </TabPane>
         })

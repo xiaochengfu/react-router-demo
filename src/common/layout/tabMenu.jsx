@@ -94,7 +94,7 @@ class TabMenu extends React.Component {
 
     menu = () => (
         <Menu>
-            <Menu.Item key="0" onClick={this.closeOther}>
+            <Menu.Item key="0" onClick={this.closeOther} disabled={this.state.panes.length === 2 && this.state.panes.some(item => item.key === 'index')}>
                 关闭其他
         </Menu.Item>
             <Menu.Item key="1" onClick={this.closeAll}>
@@ -105,7 +105,7 @@ class TabMenu extends React.Component {
     closeAll = () => {
         let panes = Array.from(this.state.panes)
         panes = panes.filter(item => item.key === 'index')
-        this.setState({ panes },()=>{
+        this.setState({ panes }, () => {
             this.props.history.push('index')
         })
     }
@@ -116,6 +116,7 @@ class TabMenu extends React.Component {
         this.setState({ panes })
     }
     render() {
+        const { panes, activeKey } = this.state
         return (
             <RouterContext.Provider
                 value={
@@ -123,16 +124,16 @@ class TabMenu extends React.Component {
                         remove: (currentRoute, history) => {
                             this.remove(currentRoute, history)
                         },
-                        tabs: this.state.panes
+                        tabs: panes
                     }}
             >
                 <div>
 
                     <Tabs
-                        tabBarExtraContent={this.operations()}
+                        tabBarExtraContent={panes.length === 1 && panes.some(item => item.key === 'index') ? null : this.operations()}
                         hideAdd
                         onChange={this.onChange}
-                        activeKey={this.state.activeKey}
+                        activeKey={activeKey}
                         type="editable-card"
                         onEdit={this.onEdit}
                         onTabClick={this.onTabClick}
@@ -140,7 +141,7 @@ class TabMenu extends React.Component {
                         {this.renderList()}
                     </Tabs>
                 </div>
-            </RouterContext.Provider>
+            </RouterContext.Provider >
         )
     }
 }

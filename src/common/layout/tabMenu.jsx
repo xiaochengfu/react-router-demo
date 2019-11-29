@@ -52,6 +52,7 @@ class TabMenu extends React.Component {
     };
 
     remove = (targetKey, history) => {
+        console.log('test')
         let { activeKey } = this.state;
         const panes = Array.from(this.state.panes)
         const currentIndex = panes.findIndex((item => item.key === targetKey))
